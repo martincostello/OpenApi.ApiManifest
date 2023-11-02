@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 using Microsoft.OpenApi.ApiManifest.Helpers;
 using System.Text.Json;
 
@@ -6,8 +9,8 @@ namespace Microsoft.OpenApi.ApiManifest;
 public class AuthorizationRequirements
 {
     public string? ClientIdentifier { get; set; }
-    public IList<string>? AccessReference { get; set; }
-    public IList<AccessRequest>? Access { get; set; }
+    public IList<string> AccessReference { get; set; } = new List<string>();
+    public IList<AccessRequest> Access { get; set; } = new List<AccessRequest>();
 
     private const string ClientIdentifierProperty = "clientIdentifier";
     private const string AccessProperty = "access";
@@ -40,7 +43,7 @@ public class AuthorizationRequirements
 
         if (!string.IsNullOrWhiteSpace(ClientIdentifier)) writer.WriteString(ClientIdentifierProperty, ClientIdentifier);
 
-        if (AccessReference is not null)
+        if (AccessReference.Any())
         {
             writer.WritePropertyName(AccessProperty);
             writer.WriteStartArray();
@@ -50,7 +53,7 @@ public class AuthorizationRequirements
             }
             writer.WriteEndArray();
         }
-        else if (Access is not null)
+        else if (Access.Any())
         {
             writer.WritePropertyName(AccessProperty);
             writer.WriteStartArray();
@@ -62,6 +65,7 @@ public class AuthorizationRequirements
         }
         writer.WriteEndObject();
     }
+
     // Load Method
     internal static AuthorizationRequirements Load(JsonElement value)
     {

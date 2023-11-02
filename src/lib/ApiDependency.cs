@@ -1,9 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 using Microsoft.OpenApi.ApiManifest.Helpers;
 using System.Text.Json;
 
 namespace Microsoft.OpenApi.ApiManifest;
 public class ApiDependency
 {
+    private const string ApiDescriptionUrlProperty = "apiDescriptionUrl";
+    private const string ApiDescriptionVersionProperty = "apiDescriptionVersion";
+    private const string ApiDeploymentBaseUrlProperty = "apiDeploymentBaseUrl";
+    private const string AuthorizationRequirementsProperty = "authorizationRequirements";
+    private const string RequestsProperty = "requests";
+    private const string ExtensionsProperty = "extensions";
+
     public string? ApiDescriptionUrl { get; set; }
     public string? ApiDescriptionVersion { get; set; }
     private string? _apiDeploymentBaseUrl;
@@ -18,14 +28,7 @@ public class ApiDependency
     }
     public AuthorizationRequirements? AuthorizationRequirements { get; set; }
     public IList<RequestInfo> Requests { get; set; } = new List<RequestInfo>();
-    public Extensions? Extensions { get; set; }
-
-    private const string ApiDescriptionUrlProperty = "apiDescriptionUrl";
-    private const string ApiDescriptionVersionProperty = "apiDescriptionVersion";
-    private const string ApiDeploymentBaseUrlProperty = "apiDeploymentBaseUrl";
-    private const string AuthorizationRequirementsProperty = "authorizationRequirements";
-    private const string RequestsProperty = "requests";
-    private const string ExtensionsProperty = "extensions";
+    public Extensions Extensions { get; set; } = new Extensions();
 
     // Write method
     public void Write(Utf8JsonWriter writer)
@@ -37,13 +40,13 @@ public class ApiDependency
         if (!string.IsNullOrWhiteSpace(ApiDescriptionVersion)) writer.WriteString(ApiDescriptionVersionProperty, ApiDescriptionVersion);
         if (!string.IsNullOrWhiteSpace(ApiDeploymentBaseUrl)) writer.WriteString(ApiDeploymentBaseUrlProperty, ApiDeploymentBaseUrl);
 
-        if (AuthorizationRequirements != null)
+        if (AuthorizationRequirements is not null)
         {
             writer.WritePropertyName(AuthorizationRequirementsProperty);
             AuthorizationRequirements.Write(writer);
         }
 
-        if (Requests.Count > 0)
+        if (Requests.Any())
         {
             writer.WritePropertyName(RequestsProperty);
             writer.WriteStartArray();
@@ -54,7 +57,7 @@ public class ApiDependency
             writer.WriteEndArray();
         }
 
-        if (Extensions != null)
+        if (Extensions.Any())
         {
             writer.WritePropertyName(ExtensionsProperty);
             Extensions.Write(writer);
