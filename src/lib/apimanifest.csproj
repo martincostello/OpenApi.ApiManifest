@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
     <PackageId>Microsoft.OpenApi.ApiManifest</PackageId>
     <VersionPrefix>0.5.3</VersionPrefix>
     <VersionSuffix>preview</VersionSuffix>
@@ -14,12 +14,12 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageOutputPath>./../../artifacts</PackageOutputPath>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <SignAssembly>True</SignAssembly>
     <Title>API Manifest</Title>
     <AssemblyName>Microsoft.OpenApi.ApiManifest</AssemblyName>
     <RootNamespace>Microsoft.OpenApi.ApiManifest</RootNamespace>
     <AssemblyOriginatorKeyFile>..\sgKey.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.11" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

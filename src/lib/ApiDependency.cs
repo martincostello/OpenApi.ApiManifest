@@ -30,7 +30,7 @@ public class ApiDependency
     // Write method
     public void Write(Utf8JsonWriter writer)
     {
-        ArgumentNullException.ThrowIfNull(writer);
+        // TODO: ArgumentNullException.ThrowIfNull(writer);
         writer.WriteStartObject();
 
         if (!string.IsNullOrWhiteSpace(ApiDescriptionUrl)) writer.WriteString(ApiDescriptionUrlProperty, ApiDescriptionUrl);
