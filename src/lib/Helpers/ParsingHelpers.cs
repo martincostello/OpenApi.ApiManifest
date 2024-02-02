@@ -21,9 +21,13 @@ internal static class ParsingHelpers
             {
                 handler(permissionsDocument, element.Value);
             }
+            else if (handlers.TryGetValue(Constants.AdditionalPropertiesProperty, out var additionalPropertiesHandler))
+            {
+                additionalPropertiesHandler(permissionsDocument, element.Value);
+            }
             else
             {
-                // Logs the unknown property. We can switch to additional properties model in the future if need be.
+                // Logs the unknown property.
                 Debug.WriteLine($"Skipped {element.Name}. The property is unknown.");
             }
         }

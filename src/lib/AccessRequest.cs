@@ -11,6 +11,7 @@ public class AccessRequest
 
     public string? Type { get; set; }
     public JsonObject? Content { get; set; }
+    public Dictionary<string, JsonObject?> AdditionalProperties { get; set; } = new Dictionary<string, JsonObject?>(StringComparer.OrdinalIgnoreCase);
 
     internal static AccessRequest Load(JsonElement content)
     {
@@ -29,12 +30,24 @@ public class AccessRequest
             writer.WritePropertyName(ContentProperty);
             writer.WriteRawValue(Content.ToJsonString());
         }
+        if (AdditionalProperties.Count != 0)
+        {
+            foreach (var property in AdditionalProperties)
+            {
+                if (property.Value != null)
+                {
+                    writer.WritePropertyName(property.Key);
+                    writer.WriteRawValue(property.Value.ToJsonString());
+                }
+            }
+        }
         writer.WriteEndObject();
     }
 
     private static readonly FixedFieldMap<AccessRequest> handlers = new()
     {
-        { TypeProperty, (o,v) => {o.Type = v.GetString(); } },
-        { ContentProperty, (o,v) => {o.Content = JsonSerializer.Deserialize<JsonObject>(v);  } },
+        { TypeProperty, (o,v) => { o.Type = v.GetString(); } },
+        { ContentProperty, (o,v) => { o.Content = JsonSerializer.Deserialize<JsonObject>(v); } },
+        { Constants.AdditionalPropertiesProperty, (o,v) => { o.AdditionalProperties = ParsingHelpers.GetMap(v, (v) => JsonSerializer.Deserialize<JsonObject>(v)); } }
     };
 }

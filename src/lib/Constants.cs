@@ -6,6 +6,7 @@ namespace Microsoft.OpenApi.ApiManifest
     internal static class Constants
     {
         public static readonly TimeSpan DefaultRegexTimeout = TimeSpan.FromSeconds(5);
+        public const string AdditionalPropertiesProperty = "additionalProperties";
     }
 
     internal static class ErrorMessage
